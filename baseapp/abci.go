@@ -150,7 +150,6 @@ func (app *BaseApp) BeginBlock(req abci.RequestBeginBlock) (res abci.ResponseBeg
 		))
 	}
 
-	// TODO for test only
 	// if err := app.validateHeight(req); err != nil {
 	// 	panic(err)
 	// }
@@ -421,7 +420,7 @@ func (app *BaseApp) Query(req abci.RequestQuery) (res abci.ResponseQuery) {
 
 	// when a client did not provide a query height, manually inject the latest
 	if req.Height == 0 {
-		req.Height = app.LastBlockHeight() - 3
+		req.Height = app.LastBlockHeight()
 	}
 
 	println("query path ", req.Path, " height ", req.Height)
@@ -633,7 +632,7 @@ func (app *BaseApp) createQueryContext(height int64, prove bool) (sdk.Context, e
 		return sdk.Context{}, err
 	}
 
-	lastBlockHeight := app.LastBlockHeight() - 3
+	lastBlockHeight := app.LastBlockHeight()
 	if height > lastBlockHeight {
 		return sdk.Context{},
 			sdkerrors.Wrap(
