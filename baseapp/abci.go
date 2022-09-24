@@ -178,10 +178,13 @@ func (app *BaseApp) BeginBlock(req abci.RequestBeginBlock) (res abci.ResponseBeg
 
 	// NOTE: header hash is not set in NewContext, so we manually set it here
 
+	// app.deliverState.ctx = app.deliverState.ctx.
+	// 	WithBlockGasMeter(gasMeter).
+	// 	WithHeaderHash(req.Hash).
+	// 	WithConsensusParams(app.GetConsensusParams(app.deliverState.ctx))
 	app.deliverState.ctx = app.deliverState.ctx.
 		WithBlockGasMeter(gasMeter).
-		WithHeaderHash(req.Hash).
-		WithConsensusParams(app.GetConsensusParams(app.deliverState.ctx))
+		WithHeaderHash(req.Hash)
 
 	// we also set block gas meter to checkState in case the application needs to
 	// verify gas consumption during (Re)CheckTx
